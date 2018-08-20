@@ -8,40 +8,39 @@ namespace WinFormsFirstOne
 {
 	class Constants
 	{
-		static public int TOTAL_CARDS = 136;
+		static public int TOTAL_CARDS = 144;
 		static public int START_CARDS = 7;
 		static public int MAX_PLAYERS = 4;
 		public enum Numbers
 		{
-			None = -1,
-			Zero = 0,
-			One = 1,
-			Two = 2,
-			Three = 3,
-			Four = 4,
-			Five = 5,
-			Six = 6,
-			Seven = 7,
-			Eight = 8,
-			Nine = 9
+			none = -1,
+			zero = 0,
+			one = 1,
+			two = 2,
+			three = 3,
+			four = 4,
+			five = 5,
+			six = 6,
+			seven = 7,
+			eight = 8,
+			nine = 9
 		}
 		public enum Powers
 		{
-			None = -1,
-			Reverse = 0,
-			Skip = 1,
-			Plus_Two = 2,
-			Wild = 3,
-			Plus_Four = 4
-			
+			none = -1,
+			reverse = 0,
+			skip = 1,
+			plus_two = 2,
+			wild = 3,
+			plus_four = 4
 		}
 		public enum Colors
 		{
-			None = -1,
-			Red = 0,
-			Green = 1,
-			Blue = 2,
-			Yellow = 3,
+			none = -1,
+			red = 0,
+			green = 1,
+			blue = 2,
+			yellow = 3,
 		}
 	}
 }

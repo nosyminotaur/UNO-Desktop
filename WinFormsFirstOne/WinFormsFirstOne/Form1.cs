@@ -19,7 +19,7 @@ namespace WinFormsFirstOne
 		public Form1()
 		{
 			InitializeComponent();
-			pictureBox1.Load("./images/blue_1_large.png");
+			pictureBox1.Load("./images/card_back_alt_large.png");
 		}
 
 		private IPAddress GetIPAddress()
@@ -38,17 +38,33 @@ namespace WinFormsFirstOne
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			UNOCard[] deck = UNOCard.GetDeck();
+			UNOCard[] deck = new UNOCard[144];
+			deck = UNOCard.GetDeck();
 			UNOCard randomCard = UNOCard.GetRandomCard(deck);
 			int color = randomCard.GetColor();
 			int power = randomCard.GetPower();
 			int number = randomCard.GetNumber();
-			if (power != -1)
+			string resource = "./images/";
+			if (color != -1)
 			{
-				String resource = "./images/";
-				resource += Constants.Colors.
-				Debug.WriteLine()
+				resource += Enum.GetName(typeof(Constants.Colors), color);
+				resource += "_";
+				if (power != -1)
+				{
+					resource += Enum.GetName(typeof(Constants.Powers), power);
+				}
+				else
+				{
+					resource += number;
+				}
 			}
+			else
+			{
+				resource += Enum.GetName(typeof(Constants.Powers), power);
+			}
+			resource += "_large.png";
+			Debug.WriteLine(resource);
+			pictureBox1.Load(resource);
 		}
 	}
 }

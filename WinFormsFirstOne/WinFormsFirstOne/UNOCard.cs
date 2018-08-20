@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,17 +21,17 @@ namespace WinFormsFirstOne
 		
 		public int GetNumber()
 		{
-			return Number;
+			return this.Number;
 		}
 
 		public int GetColor()
 		{
-			return Color;
+			return this.Color;
 		}
 
 		public int GetPower()
 		{
-			return Power;
+			return this.Power;
 		}
 
 		private static UNOCard[] GetNumberCards()
@@ -69,19 +70,20 @@ namespace WinFormsFirstOne
 
 			for (int i = 0; i < 8; i++)
 			{
-				powerCards[count] = new UNOCard(-1, -1, 3);
-				powerCards[count] = new UNOCard(-1, -1, 4);
+				powerCards[count++] = new UNOCard(-1, -1, 3);
+				powerCards[count++] = new UNOCard(-1, -1, 4);
 			}
+			Debug.WriteLine(count);
 			return powerCards;
 		}
 
 		public static UNOCard[] GetDeck()
 		{
-			UNOCard[] cards = new UNOCard[144];
+			UNOCard[] cards = new UNOCard[Constants.TOTAL_CARDS];
 			UNOCard[] numberCards = GetNumberCards();
 			UNOCard[] powerCards = GetPowerCards();
 			numberCards.CopyTo(cards, 0);
-			numberCards.CopyTo(cards, numberCards.Length);
+			powerCards.CopyTo(cards, numberCards.Length);
 			return cards;
 		}
 
@@ -134,7 +136,10 @@ namespace WinFormsFirstOne
 		public static UNOCard GetRandomCard(UNOCard[] cards)
 		{
 			Random random = new Random();
-			return cards[random.Next(cards.Length)];
+			Debug.WriteLine(cards.Length);
+			int rand_val = random.Next(cards.Length);
+			Debug.WriteLine(rand_val);
+			return cards[rand_val];
 		}
 	}
 }
