@@ -53,7 +53,7 @@ namespace WinFormsFirstOne
 
 		private static UNOCard[] GetPowerCards()
 		{
-			UNOCard[] powerCards = new UNOCard[56];
+			UNOCard[] powerCards = new UNOCard[64];
 			int count = 0;
 			for (int i = 0; i < 3; i++) //Power
 			{
@@ -69,14 +69,15 @@ namespace WinFormsFirstOne
 
 			for (int i = 0; i < 8; i++)
 			{
-				powerCards[count] = new UNOCard(-1, 3, -1);
+				powerCards[count] = new UNOCard(-1, -1, 3);
+				powerCards[count] = new UNOCard(-1, -1, 4);
 			}
 			return powerCards;
 		}
 
 		public static UNOCard[] GetDeck()
 		{
-			UNOCard[] cards = new UNOCard[136];
+			UNOCard[] cards = new UNOCard[144];
 			UNOCard[] numberCards = GetNumberCards();
 			UNOCard[] powerCards = GetPowerCards();
 			numberCards.CopyTo(cards, 0);
@@ -118,7 +119,7 @@ namespace WinFormsFirstOne
 				}
 				else
 				{
-					if (power != 3)
+					if (power != 3 || power != 4) //Plus 4 or wild
 					{
 						if (color != currentCardColor)
 						{

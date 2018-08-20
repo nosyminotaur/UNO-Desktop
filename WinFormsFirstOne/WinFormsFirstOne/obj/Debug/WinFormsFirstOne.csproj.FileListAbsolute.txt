@@ -10,3 +10,15 @@ c:\users\harsh pathak\source\repos\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\W
 c:\users\harsh pathak\source\repos\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.pdb
 C:\Users\Harsh Pathak\source\repos\WinFormsFirstOne\WinFormsFirstOne\bin\Debug\SimpleTCP.dll
 C:\Users\Harsh Pathak\source\repos\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.csproj.CopyComplete
+C:\Users\Harsh Pathak\Documents\GitHub\UNO-Desktop\UNO-Desktop\WinFormsFirstOne\WinFormsFirstOne\bin\Debug\WinFormsFirstOne.exe.config
+C:\Users\Harsh Pathak\Documents\GitHub\UNO-Desktop\UNO-Desktop\WinFormsFirstOne\WinFormsFirstOne\bin\Debug\WinFormsFirstOne.exe
+C:\Users\Harsh Pathak\Documents\GitHub\UNO-Desktop\UNO-Desktop\WinFormsFirstOne\WinFormsFirstOne\bin\Debug\WinFormsFirstOne.pdb
+C:\Users\Harsh Pathak\Documents\GitHub\UNO-Desktop\UNO-Desktop\WinFormsFirstOne\WinFormsFirstOne\bin\Debug\SimpleTCP.dll
+C:\Users\Harsh Pathak\Documents\GitHub\UNO-Desktop\UNO-Desktop\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.csprojAssemblyReference.cache
+C:\Users\Harsh Pathak\Documents\GitHub\UNO-Desktop\UNO-Desktop\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.Form1.resources
+C:\Users\Harsh Pathak\Documents\GitHub\UNO-Desktop\UNO-Desktop\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.Properties.Resources.resources
+C:\Users\Harsh Pathak\Documents\GitHub\UNO-Desktop\UNO-Desktop\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.csproj.GenerateResource.cache
+C:\Users\Harsh Pathak\Documents\GitHub\UNO-Desktop\UNO-Desktop\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.csproj.CoreCompileInputs.cache
+C:\Users\Harsh Pathak\Documents\GitHub\UNO-Desktop\UNO-Desktop\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.csproj.CopyComplete
+C:\Users\Harsh Pathak\Documents\GitHub\UNO-Desktop\UNO-Desktop\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.exe
+C:\Users\Harsh Pathak\Documents\GitHub\UNO-Desktop\UNO-Desktop\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.pdb

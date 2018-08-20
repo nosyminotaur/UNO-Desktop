@@ -16,10 +16,10 @@ namespace WinFormsFirstOne
 	public partial class Form1 : Form
 	{
 		const int port = 8081;
-		Client client;
 		public Form1()
 		{
 			InitializeComponent();
+			pictureBox1.Load("./images/blue_1_large.png");
 		}
 
 		private IPAddress GetIPAddress()
@@ -34,6 +34,21 @@ namespace WinFormsFirstOne
 				}
 			}
 			return ipAddress;
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			UNOCard[] deck = UNOCard.GetDeck();
+			UNOCard randomCard = UNOCard.GetRandomCard(deck);
+			int color = randomCard.GetColor();
+			int power = randomCard.GetPower();
+			int number = randomCard.GetNumber();
+			if (power != -1)
+			{
+				String resource = "./images/";
+				resource += Constants.Colors.
+				Debug.WriteLine()
+			}
 		}
 	}
 }

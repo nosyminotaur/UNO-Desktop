@@ -31,7 +31,9 @@ namespace WinFormsFirstOne
 			Reverse = 0,
 			Skip = 1,
 			Plus_Two = 2,
-			Plus_Four = 3
+			Wild = 3,
+			Plus_Four = 4
+			
 		}
 		public enum Colors
 		{
