@@ -1,0 +1,12 @@
+c:\users\harsh pathak\source\repos\WinFormsFirstOne\WinFormsFirstOne\bin\Debug\WinFormsFirstOne.exe.config
+c:\users\harsh pathak\source\repos\WinFormsFirstOne\WinFormsFirstOne\bin\Debug\WinFormsFirstOne.exe
+c:\users\harsh pathak\source\repos\WinFormsFirstOne\WinFormsFirstOne\bin\Debug\WinFormsFirstOne.pdb
+c:\users\harsh pathak\source\repos\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.csprojAssemblyReference.cache
+c:\users\harsh pathak\source\repos\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.Form1.resources
+c:\users\harsh pathak\source\repos\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.Properties.Resources.resources
+c:\users\harsh pathak\source\repos\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.csproj.GenerateResource.cache
+c:\users\harsh pathak\source\repos\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.csproj.CoreCompileInputs.cache
+c:\users\harsh pathak\source\repos\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.exe
+c:\users\harsh pathak\source\repos\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.pdb
+C:\Users\Harsh Pathak\source\repos\WinFormsFirstOne\WinFormsFirstOne\bin\Debug\SimpleTCP.dll
+C:\Users\Harsh Pathak\source\repos\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.csproj.CopyComplete
