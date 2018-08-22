@@ -16,10 +16,12 @@ namespace WinFormsFirstOne
 	public partial class Form1 : Form
 	{
 		const int port = 8081;
+		Server server;
 		public Form1()
 		{
 			InitializeComponent();
 			pictureBox1.Load("./images/card_back_alt_large.png");
+			server = new Server();
 		}
 
 		private IPAddress GetIPAddress()
@@ -65,6 +67,11 @@ namespace WinFormsFirstOne
 			resource += "_large.png";
 			Debug.WriteLine(resource);
 			pictureBox1.Load(resource);
+		}
+
+		private void startServerButton_Click(object sender, EventArgs e)
+		{
+			server.StartServer(userNameTextBox.Text);
 		}
 	}
 }

@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace WinFormsFirstOne
 {
-	class PlayerState
+	public class PlayerState
 	{
-		PlayerState(string playerName, bool isReady = false, bool isChance = false)
-		{
-			this.playerName = playerName;
-			this.isReady = isReady;
-			this.isChance = isChance;
-		}
+		public Socket playerSocket;
 		public string playerName;
 		public bool isReady;
 		public bool isChance;
@@ -21,5 +17,12 @@ namespace WinFormsFirstOne
 		public UNOCard[] playerCardDeck;
 		public int noOfCards;
 		public UNOCard[] validCards;
+		public PlayerState(Socket socket, string playerName, bool isReady = false, bool isChance = false)
+		{
+			this.playerSocket = socket;
+			this.playerName = playerName;
+			this.isReady = isReady;
+			this.isChance = isChance;
+		}
 	}
 }
