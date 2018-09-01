@@ -12,23 +12,26 @@ namespace WinFormsFirstOne
 	enum Messages
 	{
 		ClientReady = 0,
-		IsChance = 1,
-
+		IsChance = 1
 	}
 	class Server
 	{
+		private static UNOCard[] deck;
+		private static UNOCard currentCard;
 		private static byte[] _buffer = new byte[4096];
 		private static Socket _serverSocket;
 		private int chance;
 		private PlayerState[] players;
 		private int count;
 		private readonly int port = 8081;
+
 		public Server()
 		{
 			this.players = new PlayerState[Constants.MAX_PLAYERS];
 			this.count = 0;
 			this.chance = 0;
 		}
+
 		private void AddPlayer(PlayerState player)
 		{
 			players[count++] = player;
@@ -38,6 +41,7 @@ namespace WinFormsFirstOne
 		{
 			try
 			{
+				deck = UNOCard.Shuffle(UNOCard.GetDeck());
 				_serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 				_serverSocket.Bind(new IPEndPoint(GetIPAddress(), port));
 				players[count++] = new PlayerState(_serverSocket, username, true, true);
@@ -92,9 +96,24 @@ namespace WinFormsFirstOne
 			return flag;
 		}
 
+		private static T[] SubArray<T>(T[] data, int index, int length)
+		{
+			T[] result = new T[length];
+			Array.Copy(data, index, result, 0, length);
+			return result;
+		}
+		
 		private void Initialize()
 		{
-			
+			currentCard = deck[0];
+			int count = 1;
+			foreach (PlayerState player in players)
+			{
+				player.currentCard = currentCard;
+				player.playerCards = SubArray(deck, count, Constants.START_CARDS);
+				player.noOfCards = Constants.START_CARDS;
+				player.validCards = UNOCard.GetValidCards(currentCard, player.playerCards);
+			}
 		}
 
 		private static void ReceiveCallback(IAsyncResult ar)

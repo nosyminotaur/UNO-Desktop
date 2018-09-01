@@ -14,7 +14,7 @@ namespace WinFormsFirstOne
 		public bool isReady;
 		public bool isChance;
 		public UNOCard currentCard;
-		public UNOCard[] playerCardDeck;
+		public UNOCard[] playerCards;
 		public int noOfCards;
 		public UNOCard[] validCards;
 		public PlayerState(Socket socket, string playerName, bool isReady = false, bool isChance = false)
