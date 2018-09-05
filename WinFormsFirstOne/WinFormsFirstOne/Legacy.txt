@@ -1,0 +1,540 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace WinFormsFirstOne
+{
+	public partial class Form1 : Form
+	{
+		PictureBox[] pictureBoxes;
+		int picture_count;
+		UNOCard[] RandomCards;
+		int count = 0;
+		int RandomCardsLength = 10;
+		const int port = 8081;
+		Server server;
+		public Form1()
+		{
+			InitializeComponent();
+			Init();
+			server = new Server();
+		}
+
+		public void Init()
+		{
+			pictureBox1.Load("./images/card_back_alt_large.png");
+
+			RandomCards = new UNOCard[RandomCardsLength];
+			UNOCard[] deck = UNOCard.GetDeck(); 
+			for (int i = 0; i < RandomCardsLength; i++)
+			{
+				UNOCard card = UNOCard.GetRandomCard(deck);
+				deck = UNOCard.RemoveCard(deck, card);
+				RandomCards[i] = card;
+				//Debug.WriteLine(deck.Length);
+				Debug.WriteLine(GetImageName(card));
+			}
+			pictureBox2.Load(GetImageName(RandomCards[count]));
+
+			pictureBoxes = new PictureBox[12];
+			pictureBoxes[0] = pictureBox3;
+			pictureBoxes[1] = pictureBox4;
+			pictureBoxes[2] = pictureBox5;
+			pictureBoxes[3] = pictureBox6;
+			pictureBoxes[4] = pictureBox7;
+			pictureBoxes[5] = pictureBox8;
+			pictureBoxes[6] = pictureBox9;
+			pictureBoxes[7] = pictureBox10;
+			pictureBoxes[8] = pictureBox11;
+			pictureBoxes[9] = pictureBox12;
+			pictureBoxes[10] = pictureBox13;
+			pictureBoxes[11] = pictureBox14;
+
+			foreach (PictureBox pictureBox in pictureBoxes)
+			{
+				pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+			}
+		}
+
+		private IPAddress GetIPAddress()
+		{
+			IPAddress ipAddress = IPAddress.Any;
+			foreach (IPAddress ip in Dns.GetHostAddresses(Dns.GetHostName()))
+			{
+				if (ip.AddressFamily == AddressFamily.InterNetwork)
+				{
+					ipAddress = ip;
+					break;
+				}
+			}
+			return ipAddress;
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			UNOCard randomCard = UNOCard.GetRandomCard();
+			string resource = GetImageName(randomCard);
+			Debug.WriteLine(resource);
+			pictureBox1.Load(resource);
+		}
+
+		private string GetImageName(UNOCard card)
+		{
+			int color = card.GetColor();
+			int power = card.GetPower();
+			int number = card.GetNumber();
+			string resource = "./images/";
+			if (color != -1)
+			{
+				resource += Enum.GetName(typeof(Constants.Colors), color);
+				resource += "_";
+				if (power != -1)
+				{
+					resource += Enum.GetName(typeof(Constants.Powers), power);
+				}
+				else
+				{
+					resource += number;
+				}
+			}
+			else
+			{
+				resource += Enum.GetName(typeof(Constants.Powers), power);
+			}
+			resource += "_large.png";
+			return resource;
+		}
+
+		private void startServerButton_Click(object sender, EventArgs e)
+		{
+			server.StartServer(userNameTextBox.Text);
+			textBox1.Text = GetIPAddress().ToString() + ": " + port;
+			Debug.WriteLine(textBox1.Text);
+		}
+
+		private void LeftButton_Click(object sender, EventArgs e)
+		{
+			count--;
+			if (count < 0)
+				count += RandomCardsLength;
+			UpdateImage();
+		}
+
+		private void UpdateImage()
+		{
+			Debug.WriteLine("UpdateImage called");
+			UNOCard card = RandomCards[count];
+			string resource = GetImageName(card);
+			Debug.WriteLine(resource);
+			pictureBox2.Load(resource);
+		}
+
+		private void RightButton_Click(object sender, EventArgs e)
+		{
+			count++;
+			if (count > RandomCardsLength -1)
+				count -= RandomCardsLength;
+			UpdateImage();
+		}
+
+		private void pictureBox2_Click(object sender, EventArgs e)
+		{
+			string resource = pictureBox2.ImageLocation;
+			Debug.WriteLine(resource);
+			pictureBoxes[picture_count++].Load(resource);
+		}
+	}
+}
+
+
+
+
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+
+namespace WinFormsFirstOne
+{
+	enum Messages2
+	{
+		ClientReady,
+		GetGameStatus,
+		UIUpdated,
+		ClientCurrentStatus
+	}
+
+	class GameState
+	{
+		public List<PlayerState> players;
+		public UNOCard currentCard;
+		public int chance = 0;
+		private UNOCard[] deck;
+
+		public GameState()
+		{
+			players = new List<PlayerState>();
+			deck = UNOCard.Shuffle(UNOCard.GetDeck());
+		}
+
+		public void Initialize()
+		{
+			currentCard = deck[0];
+			deck = UNOCard.RemoveCard(deck, currentCard);
+			int count = 1;
+			foreach (PlayerState player in players)
+			{
+				player.currentCard = currentCard;
+				player.playerCards = SubArray(deck, count, Constants.START_CARDS);
+				player.noOfCards = Constants.START_CARDS;
+				player.validCards = UNOCard.GetValidCards(currentCard, player.playerCards);
+				count += Constants.START_CARDS;
+			}
+		}
+
+		public UNOCard[] GetPlayerCards(PlayerState playerState)
+		{
+			UNOCard[] playerCards = null;
+			foreach (PlayerState player in players)
+			{
+				if (player.playerSocket == playerState.playerSocket)
+				{
+					playerCards = player.playerCards;
+				}
+			}
+			return playerCards;
+		}
+
+		private T[] SubArray<T>(T[] data, int index, int length)
+		{
+			T[] result = new T[length];
+			Array.Copy(data, index, result, 0, length);
+			return result;
+		}
+
+		public UNOCard getCurrentCard()
+		{
+			return currentCard;
+		}
+	}
+
+	class GameState2
+	{
+		public bool isOver;
+		private List<PlayerState> players;
+		private UNOCard[] deck;
+		private UNOCard currentCard;
+
+		public GameState2(List<PlayerState> all_players)
+		{
+			players = all_players;
+			isOver = false;
+		}
+
+		public void Initialize()
+		{
+			deck = UNOCard.Shuffle(UNOCard.GetDeck());
+			currentCard = deck[0];
+			int count = 1;
+			foreach (PlayerState player in players)
+			{
+				player.currentCard = currentCard;
+				player.playerCards = SubArray(deck, count, Constants.START_CARDS);
+				player.noOfCards = Constants.START_CARDS;
+				player.validCards = UNOCard.GetValidCards(currentCard, player.playerCards);
+				count += Constants.START_CARDS;
+			}
+		}
+
+		private T[] SubArray<T>(T[] data, int index, int length)
+		{
+			T[] result = new T[length];
+			Array.Copy(data, index, result, 0, length);
+			return result;
+		}
+
+		public UNOCard GetCurrentCard()
+		{
+			return players[0].currentCard;
+		}
+
+		public int GetNoOfPlayers()
+		{
+			return players.Count;
+		}
+
+		public string[] GetPlayerNames()
+		{
+			string[] playerNames = new string[players.Count];
+			int i = 0;
+			foreach (PlayerState player in players)
+			{
+				playerNames[i++] = player.playerName;
+			}
+			return playerNames;
+		}
+	}
+
+	public class Server2
+	{
+		private GameState gameState;
+		private  int message_size;
+		private  byte[] _buffer = new byte[4096];
+		private  Socket _serverSocket;
+		private  readonly int port = 8081;
+
+		public  bool StartServer(string username)
+		{
+			bool flag = true;
+			if (Initialize(username))
+			{
+				_serverSocket.BeginAccept(_buffer.Length, new AsyncCallback(AcceptCallback), null);
+			}
+			else
+			{
+				flag = false;
+			}
+			return flag;
+		}
+
+		private  void AcceptCallback(IAsyncResult ar)
+		{
+			try
+			{
+				byte[] _buffer = new byte[_serverSocket.ReceiveBufferSize];
+				Socket _clientSocket = _serverSocket.EndAccept(out _buffer, ar);
+				_clientSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), _clientSocket);
+				string username = Encoding.ASCII.GetString(_buffer);
+				Debug.WriteLine(username + " added!");
+				gameState.players.Add(new PlayerState(_clientSocket, username));
+				if (gameState.players.Count < Constants.MAX_PLAYERS)
+				{
+					_serverSocket.BeginAccept(_serverSocket.ReceiveBufferSize, new AsyncCallback(AcceptCallback), null);
+				}
+				else
+				{
+					Debug.WriteLine("Max players!");
+					return;
+				}
+			}
+			catch (Exception e)
+			{
+				Debug.WriteLine(e.ToString());
+			}
+		}
+
+		private void ReceiveCallback(IAsyncResult ar)
+		{
+			try
+			{
+				Socket _clientSocket = (Socket)ar.AsyncState;
+				int receivedSize =_clientSocket.EndReceive(ar);
+				if (receivedSize == 0)
+				{
+					_clientSocket.BeginReceive(_buffer, 0, _serverSocket.ReceiveBufferSize, SocketFlags.None, new AsyncCallback(ReceiveCallback), _clientSocket);
+				}
+
+				if (receivedSize == 4)
+				{
+					//received data is int, indicating incoming message size
+					string size_str = Encoding.ASCII.GetString(_buffer);
+					message_size = int.Parse(size_str);
+					Debug.WriteLine("Integer received, val: " +message_size);
+					_clientSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(DataReceiveCallback), _clientSocket);
+				}
+
+			}
+			catch (Exception e)
+			{
+				Debug.WriteLine(e.ToString());
+			}
+		}
+
+		private  void DataReceiveCallback(IAsyncResult ar)
+		{
+			Socket clientSocket = (Socket)ar.AsyncState;
+			try
+			{
+				int receivedSize = _serverSocket.EndReceive(ar);
+				if (receivedSize != message_size)
+				{
+					Debug.WriteLine("Full message not received");
+					clientSocket.BeginReceive(_buffer, receivedSize, _buffer.Length - receivedSize, SocketFlags.None, new AsyncCallback(DataReceiveCallback), clientSocket);
+				}
+				string message_received = Encoding.ASCII.GetString(_buffer);
+				Debug.WriteLine(message_received);
+				CheckReply(clientSocket, message_received);
+			}
+			catch (Exception e)
+			{
+				Debug.WriteLine(e.ToString());
+			}
+		}
+
+		private  void CheckReply(Socket clientSocket, string message_received)
+		{
+			if (Enum.TryParse(message_received, out Messages2 message))
+			{
+				switch (message)
+				{
+					case Messages2.ClientReady:
+						SendCards(clientSocket);
+						break;
+				}
+			}
+		}
+
+		private void SendCards(Socket clientSocket)
+		{
+			PlayerState player = null;
+			foreach (PlayerState playerState in gameState.players)
+			{
+				if (playerState.playerSocket == clientSocket)
+				{
+					player = playerState;
+				}
+			}
+
+			UNOCard[] playerCards = gameState.GetPlayerCards(player);
+			byte[] data = ConvertToByte(playerCards);
+			Send(player, data);
+			Debug.WriteLine("Cards sent!");
+		}
+
+		private byte[] ConvertToByte<T>(T[] array)
+		{
+			string output = JsonConvert.SerializeObject(array);
+			return Encoding.ASCII.GetBytes(output);
+		}
+
+		private byte[] GetByteArrayFromArray<T>(T[] array)
+		{
+			List<byte[]> data_partial = new List<byte[]>();
+			int length = array.Length;
+			int size = 0;
+			for (int i = 0; i < length; i++)
+			{
+				data_partial[i] = GetByteFromObject(array[i]);
+				size += data_partial[i].Length;
+			}
+			size += length * 4;
+			byte[] data = new byte[size];
+			int count = 0;
+			for (int i = 0; i < length; i++)
+			{
+				int index_size = data_partial[i].Length;
+				byte[] int_to_byte = BitConverter.GetBytes(index_size);
+				Array.Copy(int_to_byte, 0, data, count, int_to_byte.Length);
+				count += int_to_byte.Length;
+				byte[] data_to_byte = GetByteFromObject(data_partial[i]);
+				Array.Copy(data_to_byte, 0, data, count, data_to_byte.Length);
+			}
+			return data;
+		}
+
+		private byte[] GetByteFromObject(object obj)
+		{
+			var binFormatter = new BinaryFormatter();
+			var mStream = new MemoryStream();
+			binFormatter.Serialize(mStream, obj);
+
+			//This gives you the byte array.
+			return mStream.ToArray();
+		}
+
+		private object GetObjectFromByte(byte[] objectBytes)
+		{
+			var mStream = new MemoryStream();
+			var binFormatter = new BinaryFormatter();
+
+			// Where 'objectBytes' is your byte array.
+			mStream.Write(objectBytes, 0, objectBytes.Length);
+			mStream.Position = 0;
+
+			return binFormatter.Deserialize(mStream);
+		}
+
+		public void Send(PlayerState player, byte[] data)
+		{
+			foreach (PlayerState playerName in gameState.players)
+			{
+				if (playerName.playerName == player.playerName)
+				{
+					player.playerSocket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallBack), player.playerSocket);
+				}
+			}
+		}
+
+		private  void SendCallBack(IAsyncResult ar)
+		{
+			Socket clientSocket = (Socket)ar.AsyncState;
+			clientSocket.EndSend(ar);
+			clientSocket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), null);
+		}
+
+		private  bool Initialize(string username)
+		{
+			bool flag = true;
+			try
+			{
+				gameState = new GameState();
+				gameState.Initialize();
+
+				_serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+				_serverSocket.Bind(new IPEndPoint(GetIPAddress(), port));
+				gameState.players.Add(new PlayerState(_serverSocket, username, true));
+				Debug.WriteLine("Count increased to: " + gameState.players.Count);
+				_serverSocket.Listen(Constants.MAX_PLAYERS);
+				Debug.WriteLine("Server started at: " + GetIPAddress().ToString());
+			}
+			catch (Exception e)
+			{
+				flag = false;
+				Debug.WriteLine(e.ToString());
+				throw;
+			}
+			return flag;
+		}
+
+		private  T[] SubArray<T>(T[] data, int index, int length)
+		{
+			T[] result = new T[length];
+			Array.Copy(data, index, result, 0, length);
+			return result;
+		}
+
+		public  IPAddress GetIPAddress()
+		{
+			IPAddress ipAddress = IPAddress.Any;
+			foreach (IPAddress ip in Dns.GetHostAddresses(Dns.GetHostName()))
+			{
+				if (ip.AddressFamily == AddressFamily.InterNetwork)
+				{
+					ipAddress = ip;
+					break;
+				}
+			}
+			return ipAddress;
+		}
+	}
+}

@@ -11,17 +11,15 @@ namespace WinFormsFirstOne
 	{
 		public Socket playerSocket;
 		public string playerName;
-		public bool isReady;
 		public bool isChance;
 		public UNOCard currentCard;
 		public UNOCard[] playerCards;
 		public int noOfCards;
 		public UNOCard[] validCards;
-		public PlayerState(Socket socket, string playerName, bool isReady = false, bool isChance = false)
+		public PlayerState(Socket socket, string playerName, bool isChance = false)
 		{
 			this.playerSocket = socket;
 			this.playerName = playerName;
-			this.isReady = isReady;
 			this.isChance = isChance;
 		}
 	}

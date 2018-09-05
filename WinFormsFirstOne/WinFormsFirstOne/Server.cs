@@ -44,7 +44,7 @@ namespace WinFormsFirstOne
 				deck = UNOCard.Shuffle(UNOCard.GetDeck());
 				_serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 				_serverSocket.Bind(new IPEndPoint(GetIPAddress(), port));
-				players[count++] = new PlayerState(_serverSocket, username, true, true);
+				players[count++] = new PlayerState(_serverSocket, username, true);
 				Debug.WriteLine("Count incresed to: " + count);
 				_serverSocket.Listen(Constants.MAX_PLAYERS);
 				Debug.WriteLine("Server started at: " + GetIPAddress().ToString());
@@ -157,7 +157,7 @@ namespace WinFormsFirstOne
 
 		private static void SendDefaultReply(Socket socket)
 		{
-			throw new NotImplementedException();
+			
 		}
 
 		private static void CheckChance(Socket socket)
@@ -175,7 +175,7 @@ namespace WinFormsFirstOne
 
 		}
 
-		private IPAddress GetIPAddress()
+		public IPAddress GetIPAddress()
 		{
 			IPAddress ipAddress = IPAddress.Any;
 			foreach (IPAddress ip in Dns.GetHostAddresses(Dns.GetHostName()))

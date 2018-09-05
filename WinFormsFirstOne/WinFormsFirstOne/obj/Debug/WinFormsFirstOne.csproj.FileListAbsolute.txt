@@ -22,3 +22,5 @@ C:\Users\Harsh Pathak\Documents\GitHub\UNO-Desktop\UNO-Desktop\WinFormsFirstOne\
 C:\Users\Harsh Pathak\Documents\GitHub\UNO-Desktop\UNO-Desktop\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.csproj.CopyComplete
 C:\Users\Harsh Pathak\Documents\GitHub\UNO-Desktop\UNO-Desktop\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.exe
 C:\Users\Harsh Pathak\Documents\GitHub\UNO-Desktop\UNO-Desktop\WinFormsFirstOne\WinFormsFirstOne\obj\Debug\WinFormsFirstOne.pdb
+C:\Users\Harsh Pathak\Documents\GitHub\UNO-Desktop\UNO-Desktop\WinFormsFirstOne\WinFormsFirstOne\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Harsh Pathak\Documents\GitHub\UNO-Desktop\UNO-Desktop\WinFormsFirstOne\WinFormsFirstOne\bin\Debug\Newtonsoft.Json.xml

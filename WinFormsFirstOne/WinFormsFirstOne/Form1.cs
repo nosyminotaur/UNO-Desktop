@@ -16,54 +16,13 @@ namespace WinFormsFirstOne
 {
 	public partial class Form1 : Form
 	{
-		UNOCard[] RandomCards;
-		int count = 0;
-		int RandomCardsLength = 10;
 		const int port = 8081;
-		Server server;
+		Server2 server;
+		Client2 client;
 		public Form1()
 		{
 			InitializeComponent();
-			LoadRandomCards();
-			server = new Server();
-		}
-
-		public void LoadRandomCards()
-		{
-			pictureBox1.Load("./images/card_back_alt_large.png");
-			RandomCards = new UNOCard[RandomCardsLength];
-			UNOCard[] deck = UNOCard.GetDeck(); 
-			for (int i = 0; i < RandomCardsLength; i++)
-			{
-				UNOCard card = UNOCard.GetRandomCard(deck);
-				deck = UNOCard.RemoveCard(deck, card);
-				RandomCards[i] = card;
-				//Debug.WriteLine(deck.Length);
-				Debug.WriteLine(GetImageName(card));
-			}
-			pictureBox2.Load(GetImageName(RandomCards[count]));
-		}
-
-		private IPAddress GetIPAddress()
-		{
-			IPAddress ipAddress = IPAddress.Any;
-			foreach (IPAddress ip in Dns.GetHostAddresses(Dns.GetHostName()))
-			{
-				if (ip.AddressFamily == AddressFamily.InterNetwork)
-				{
-					ipAddress = ip;
-					break;
-				}
-			}
-			return ipAddress;
-		}
-
-		private void button1_Click(object sender, EventArgs e)
-		{
-			UNOCard randomCard = UNOCard.GetRandomCard();
-			string resource = GetImageName(randomCard);
-			Debug.WriteLine(resource);
-			pictureBox1.Load(resource);
+			server = new Server2();
 		}
 
 		private string GetImageName(UNOCard card)
@@ -93,41 +52,43 @@ namespace WinFormsFirstOne
 			return resource;
 		}
 
-		private void startServerButton_Click(object sender, EventArgs e)
+		private void StartServerButton_Click(object sender, EventArgs e)
 		{
-			server.StartServer(userNameTextBox.Text);
-			textBox1.Text = GetIPAddress().ToString() + ": " + port;
-			Debug.WriteLine(textBox1.Text);
+			if (UserNameTextBox.Text != "")
+			{
+				server.StartServer(UserNameTextBox.Text);
+				IPAddressOutputTextBox.Text = server.GetIPAddress().ToString() + ": " + port;
+				Debug.WriteLine(IPAddressOutputTextBox.Text);
+			}
+			else
+			{
+				MessageBox.Show("Enter a username", "Error", MessageBoxButtons.OK);
+			}
 		}
 
-		private void LeftButton_Click(object sender, EventArgs e)
+		private void JoinGameButton_Click(object sender, EventArgs e)
 		{
-			count--;
-			if (count < 0)
-				count += RandomCardsLength;
-			UpdateImage();
+			string ip = IPAddressInputTextBox.Text;
+			IPAddress ipAddress;
+			IPAddress.TryParse(ip, out ipAddress);
+			string username = UserNameTextBox2.Text;
+			Debug.WriteLine(username);
+			client = new Client2(ipAddress, port, username);
+			client.Start();
 		}
 
-		private void UpdateImage()
+		private IPAddress GetIPAddress()
 		{
-			Debug.WriteLine("UpdateImage called");
-			UNOCard card = RandomCards[count];
-			string resource = GetImageName(card);
-			Debug.WriteLine(resource);
-			pictureBox2.Load(resource);
-		}
-
-		private void RightButton_Click(object sender, EventArgs e)
-		{
-			count++;
-			if (count > RandomCardsLength -1)
-				count -= RandomCardsLength;
-			UpdateImage();
-		}
-
-		private void pictureBox2_Click(object sender, EventArgs e)
-		{
-			Debug.WriteLine(pictureBox2.ImageLocation);
+			IPAddress ipAddress = IPAddress.Any;
+			foreach (IPAddress ip in Dns.GetHostAddresses(Dns.GetHostName()))
+			{
+				if (ip.AddressFamily == AddressFamily.InterNetwork)
+				{
+					ipAddress = ip;
+					break;
+				}
+			}
+			return ipAddress;
 		}
 	}
 }

@@ -24,18 +24,21 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace WinFormsFirstOne
 {
 	public class UNOCard
 	{
-		private static Random random;
-		protected int Number;
-		protected int Color;
-		protected int Power;
-		UNOCard(int Number, int Color, int Power)
+		public static Random random;
+		public int Number;
+		public int Color;
+		public int Power;
+		public UNOCard()
+		{
+			//Empty default constructor, do not remove!
+		}
+		public UNOCard(int Number, int Color, int Power)
 		{
 			random = new Random();
 			this.Number = Number;

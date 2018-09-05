@@ -1,0 +1,50 @@
+﻿server start!
+wait for connections until server side button "Start game" pressed!
+serverState shoud add a playerState to its list
+serverstate should be ready!
+on pressing Start game, serverstate should 
+
+code part mainly ready if i am able to deduce game logic!
+
+
+1 server
+2 client
+3 client
+4 client
+
+Server gameServer = new Server()
+Game starts, 1 presses start server, gameServer.StartServer() invoked, keeps on adding players and displaying them on 1's screen.
+When 1 presses Start Game, gameServer should stop adding more players. Do that by using a flag which turns false when gameServer.Receive() is invoked. Now, gameServer will keep on receiving data, and reply accordingly. Now, server must become independent. Work on that.
+Now, gameServer.Receive() will wait for a message from the client, stating "ClientReady$".The gameServer should also send a message, "ServerReady$", and start listening again.
+$ will be used to check that all the data has been received.
+When client sends the message "ClientReady$", listen for the message "ServerReady$".
+When "ServerReady$" has been received, then send "GetGameStatus$" for getting game status, and then keep listening for a reply.
+Server was already listening, so when "GetGameStatus$" is received, send JSON data for "PlayerData" and again wait for a message.
+Client now has the game status, if it is the client's chance then allow player to play else keep sending the "GetGameStatus" message. Then send a message "UIUpdated$" to Server,and waits for a reply.
+Server receives "UIUpdated$" and then Server checks whose chance it is.
+Then server sends "ClientChanceTrue$" to the Client whose chance it is right now and "ClientChanceFalse$" to the rest. It also waits for a reply from the client.
+The correct client receives "ClientChanceTrue$" and then allows the Player to play a card.
+Then client sends JSON of UNOCard back to server, but before that also sends a "ClientCurrentState$"
+The server receives "ClientCurrentState$" and then gets ready for a JSON response.
+It updates chance accordingly. 
+It also sends a response back to all clients, providing necessary info which is yet to be decided. 
+It then goes back to "ClientChanceTrue$" logic and runs a loop.
+
+
+2 Players.
+1st clicks Host Game. HostGamePanel is visible.
+2nd clicks Join Game. JoinGamePanel is visible.
+
+HostGamePanel has a start server button and labels that display the username of the client connected.
+It also has a start game button. This button sends "GameStart$" to each client (only 2 here). It also loads GamePanel.
+JoinGamePanel has a textbox to enter IP and then connect. It waits until it receives "GameStart$".
+It then waits until it receives UNOCard[] player cards.
+Then it loads GamePanel, and updates UI.
+// 1:24 02/09/2018 
+Now the client plays. 
+It then stores the currentCard, and sends it to the Server, who then sends it to all clients with Tag "CurrentCard" which update their UI.
+Everytime "CurrentCard" is received, Server updates it's current card and changes the current players chance and then sends "ClientChanceTrue" to the correct client.
+Also, it sends cards to the players if currentCard turns out to be "Plus 4" or "Plus Two"
+
+
+An idea just struck me, we could add the server as another client, best so that game logic does not change for client/server.
