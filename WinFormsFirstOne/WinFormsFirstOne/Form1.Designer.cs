@@ -35,11 +35,14 @@
 			this.UserNameTextBox = new System.Windows.Forms.TextBox();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.panel2 = new System.Windows.Forms.Panel();
+			this.UserNameTextBox2 = new System.Windows.Forms.TextBox();
+			this.label6 = new System.Windows.Forms.Label();
 			this.ConnectionStatusLabel = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.IPAddressInputTextBox = new System.Windows.Forms.TextBox();
 			this.JoinGameButton = new System.Windows.Forms.Button();
 			this.HostGamePanel = new System.Windows.Forms.Panel();
+			this.label7 = new System.Windows.Forms.Label();
 			this.panel3 = new System.Windows.Forms.Panel();
 			this.label5 = new System.Windows.Forms.Label();
 			this.button2 = new System.Windows.Forms.Button();
@@ -52,9 +55,7 @@
 			this.label4 = new System.Windows.Forms.Label();
 			this.CurrentCardPictureBox = new System.Windows.Forms.PictureBox();
 			this.label3 = new System.Windows.Forms.Label();
-			this.label6 = new System.Windows.Forms.Label();
-			this.label7 = new System.Windows.Forms.Label();
-			this.UserNameTextBox2 = new System.Windows.Forms.TextBox();
+			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.panel1.SuspendLayout();
 			this.panel2.SuspendLayout();
 			this.HostGamePanel.SuspendLayout();
@@ -131,6 +132,22 @@
 			this.panel2.Size = new System.Drawing.Size(276, 148);
 			this.panel2.TabIndex = 23;
 			// 
+			// UserNameTextBox2
+			// 
+			this.UserNameTextBox2.Location = new System.Drawing.Point(138, 7);
+			this.UserNameTextBox2.Name = "UserNameTextBox2";
+			this.UserNameTextBox2.Size = new System.Drawing.Size(112, 20);
+			this.UserNameTextBox2.TabIndex = 22;
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Location = new System.Drawing.Point(3, 10);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(86, 13);
+			this.label6.TabIndex = 20;
+			this.label6.Text = "Enter Username:";
+			// 
 			// ConnectionStatusLabel
 			// 
 			this.ConnectionStatusLabel.AutoSize = true;
@@ -176,6 +193,15 @@
 			this.HostGamePanel.Name = "HostGamePanel";
 			this.HostGamePanel.Size = new System.Drawing.Size(276, 148);
 			this.HostGamePanel.TabIndex = 22;
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(15, 10);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(86, 13);
+			this.label7.TabIndex = 21;
+			this.label7.Text = "Enter Username:";
 			// 
 			// panel3
 			// 
@@ -288,36 +314,20 @@
 			this.label3.TabIndex = 20;
 			this.label3.Text = "Current Card";
 			// 
-			// label6
+			// textBox1
 			// 
-			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(3, 10);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(86, 13);
-			this.label6.TabIndex = 20;
-			this.label6.Text = "Enter Username:";
-			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(15, 10);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(86, 13);
-			this.label7.TabIndex = 21;
-			this.label7.Text = "Enter Username:";
-			// 
-			// UserNameTextBox2
-			// 
-			this.UserNameTextBox2.Location = new System.Drawing.Point(138, 7);
-			this.UserNameTextBox2.Name = "UserNameTextBox2";
-			this.UserNameTextBox2.Size = new System.Drawing.Size(112, 20);
-			this.UserNameTextBox2.TabIndex = 22;
+			this.textBox1.Location = new System.Drawing.Point(622, 57);
+			this.textBox1.Multiline = true;
+			this.textBox1.Name = "textBox1";
+			this.textBox1.Size = new System.Drawing.Size(135, 45);
+			this.textBox1.TabIndex = 22;
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(799, 602);
+			this.Controls.Add(this.textBox1);
 			this.Controls.Add(this.panel3);
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.infoLabel);
@@ -370,6 +380,7 @@
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.TextBox UserNameTextBox2;
+		private System.Windows.Forms.TextBox textBox1;
 	}
 }
 

@@ -121,7 +121,9 @@ namespace WinFormsFirstOne
 			string data = Encoding.ASCII.GetString(_buffer, 0, receivedSize);
 			Debug.WriteLine(data.Length);
 			List<UNOCard> deserializedProduct = JsonConvert.DeserializeObject<List<UNOCard>>(data);
-			Debug.WriteLine(deserializedProduct[0].GetNumber());
+			Debug.WriteLine(deserializedProduct[0].GetColor());
+			Constants.Colors colors = (Constants.Colors)deserializedProduct[0].GetColor();
+			Debug.WriteLine(colors.ToString());
 		}
 	}
 }

@@ -45,7 +45,7 @@ namespace WinFormsFirstOne
 			this.Color = Color;
 			this.Power = Power;
 		}
-		
+
 		public int GetNumber()
 		{
 			return this.Number;

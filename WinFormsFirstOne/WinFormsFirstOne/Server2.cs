@@ -12,15 +12,7 @@ using Newtonsoft.Json;
 
 namespace WinFormsFirstOne
 {
-	enum Messages2
-	{
-		ClientReady,
-		GetGameStatus,
-		UIUpdated,
-		ClientCurrentStatus
-	}
-
-	class GameState
+	class GameState2
 	{
 		public List<PlayerState> players;
 		public UNOCard currentCard;

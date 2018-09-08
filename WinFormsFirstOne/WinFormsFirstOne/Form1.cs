@@ -17,12 +17,31 @@ namespace WinFormsFirstOne
 	public partial class Form1 : Form
 	{
 		const int port = 8081;
-		Server2 server;
-		Client2 client;
+		ServerNew server;
+		ClientNew client;
+		ClientState clientState;
 		public Form1()
 		{
 			InitializeComponent();
-			server = new Server2();
+			server = new ServerNew();
+		}
+
+		delegate void SetTextCallback(string text);
+
+		private void SetText(string text)
+		{
+			// InvokeRequired required compares the thread ID of the
+			// calling thread to the thread ID of the creating thread.
+			// If these threads are different, it returns true.
+			if (textBox1.InvokeRequired)
+			{
+				SetTextCallback d = new SetTextCallback(SetText);
+				this.Invoke(d, new object[] { text });
+			}
+			else
+			{
+				this.textBox1.Text = text;
+			}
 		}
 
 		private string GetImageName(UNOCard card)
@@ -70,11 +89,26 @@ namespace WinFormsFirstOne
 		{
 			string ip = IPAddressInputTextBox.Text;
 			IPAddress ipAddress;
-			IPAddress.TryParse(ip, out ipAddress);
-			string username = UserNameTextBox2.Text;
-			Debug.WriteLine(username);
-			client = new Client2(ipAddress, port, username);
-			client.Start();
+			if (IPAddress.TryParse(ip, out ipAddress))
+			{
+				string username = UserNameTextBox2.Text;
+				clientState = new ClientState(username);
+				client = new ClientNew(ipAddress, port, username, clientState);
+				client.PlayerCardsReceived += Client_PlayerCardsReceived;
+				client.Start();
+			}
+			else
+			{
+				MessageBox.Show("IP incorrectly entered, try again!");
+			}
+		}
+
+		private void Client_PlayerCardsReceived(object source, ClientStateEventArgs args)
+		{
+			Debug.WriteLine("Inside Delegate method");
+			int color = args.clientState.userCards[0].GetColor();
+			Messages2 message = (Messages2)color;
+			SetText(message.ToString());
 		}
 
 		private IPAddress GetIPAddress()

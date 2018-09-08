@@ -9,11 +9,6 @@ using System.Threading.Tasks;
 
 namespace WinFormsFirstOne
 {
-	enum Messages
-	{
-		ClientReady = 0,
-		IsChance = 1
-	}
 	class Server
 	{
 		private static UNOCard[] deck;
