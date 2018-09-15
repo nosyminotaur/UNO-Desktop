@@ -12,40 +12,74 @@ namespace WinFormsFirstOne
 {
 	public class ClientStateEventArgs : EventArgs
 	{
-		public ClientState clientState { get; set; }
+		public List<string> otherPlayerNames;
+		public UNOCard currentCard;
+		public List<UNOCard> userCards;
+		public List<int> otherPlayerCards;
 	}
 
 	public class ClientNew
 	{
+		ClientStateEventArgs clientArgs;
 		private IPAddress ipAddress;
 		private readonly int port;
         private ClientState clientState;
 
-		public ClientNew(IPAddress IPAddress, int port, string username, ClientState client)
+		public ClientNew(IPAddress IPAddress, int _port, string username, ClientState client)
 		{
-			this.ipAddress = IPAddress;
-			this.port = port;
-            this.clientState = client;
+			ipAddress = IPAddress;
+			port = _port;
+            clientState = client;
+			clientArgs = new ClientStateEventArgs();
 		}
 
-		public event EventHandler<ClientStateEventArgs> PlayerCardsReceived;
+		//Event handlers and their methods
 
-		protected virtual void OnPlayerCardsReceived()
+		public event EventHandler<ClientStateEventArgs> UserCardsReceived;
+		public event EventHandler<ClientStateEventArgs> OtherPlayerNamesReceived;
+		public event EventHandler<ClientStateEventArgs> OtherPlayerCardsReceived;
+		public event EventHandler<ClientStateEventArgs> CurrentCardReceived;
+
+		protected virtual void OnUserCardsReceived()
 		{
+			UserCardsReceived?.Invoke(this, new ClientStateEventArgs() {
+				userCards = clientState.userCards
+			});
+		}
 
-			PlayerCardsReceived?.Invoke(this, new ClientStateEventArgs() { clientState = this.clientState});
+		protected virtual void OnOtherPlayerNamesReceived()
+		{
+			OtherPlayerNamesReceived?.Invoke(this, new ClientStateEventArgs()
+			{
+				otherPlayerNames = clientState.otherPlayerNames
+			});
+		}
+
+		protected virtual void OnOtherPlayerCardsReceived()
+		{
+			OtherPlayerCardsReceived?.Invoke(this, new ClientStateEventArgs()
+			{
+				otherPlayerCards = clientState.otherPlayerCards
+			});
+		}
+
+		protected virtual void OnCurrentCardReceived()
+		{
+			CurrentCardReceived?.Invoke(this, new ClientStateEventArgs()
+			{
+				currentCard = clientState.currentCard
+			});
 		}
 
 		public void Start()
 		{
-			try
-			{
-				clientState.clientSocket.BeginConnect(new IPEndPoint(ipAddress, port), new AsyncCallback(ConnectCallback), null);
-			}
-			catch (Exception ef)
-			{
-				Debug.WriteLine(ef.ToString());
-			}
+			clientState.clientSocket.BeginConnect(new IPEndPoint(ipAddress, port), new AsyncCallback(ConnectCallback), null);
+		}
+
+		public void CheckConnection()
+		{
+			byte[] check = BitConverter.GetBytes(true);
+			clientState.clientSocket.Send(check);
 		}
 
 		private void ConnectCallback(IAsyncResult ar)
@@ -55,10 +89,8 @@ namespace WinFormsFirstOne
 				byte[] data = Encoding.ASCII.GetBytes(clientState.userName);
 				clientState.clientSocket.Send(data);
 				clientState.clientSocket.EndConnect(ar);
-				int message = (int)Messages2.GetPlayerCards;
-				Debug.WriteLine("Sending: " + message);
-				data = BitConverter.GetBytes(message);
-				clientState.clientSocket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), null);
+				List<int> message = new List<int>();
+				SendMessage(message);
 			}
 			catch (Exception e)
 			{
@@ -66,13 +98,33 @@ namespace WinFormsFirstOne
 			}
 		}
 
+		private void SendMessage(List<int> message)
+		{
+			if (message.Count < (int)Messages2.Null)
+			{
+				if (!message.Any())
+				{
+					message.Add(0);
+					byte[] data = BitConverter.GetBytes(0);
+					clientState.clientSocket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), message);
+				}
+				else
+				{
+					message.Add(message.Last() + 1);
+					byte[] data = BitConverter.GetBytes(message.Last());
+					clientState.clientSocket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), message);
+				}
+			}
+		}
+
 		private void SendCallback(IAsyncResult ar)
 		{
+			List<int> message = (List<int>)ar.AsyncState;
 			try
 			{
 				clientState.clientSocket.EndSend(ar);
-				Debug.WriteLine("GetPlayerCards sent!");
-				clientState.clientSocket.BeginReceive(clientState.buffer, 0, clientState.buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback3), null);
+				Debug.WriteLine("Message sent!");
+				clientState.clientSocket.BeginReceive(clientState.buffer, 0, clientState.buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), message);
 			}
 			catch (Exception e)
 			{
@@ -86,20 +138,6 @@ namespace WinFormsFirstOne
 			byte[] data = clientState.buffer;
 			string cards = Encoding.ASCII.GetString(data);
 			ConvertAndDisplay2(cards);
-		}
-
-		private void ReceiveCallback2(IAsyncResult ar)
-		{
-			Debug.WriteLine("Bool value received, sending ClientReady");
-			clientState.clientSocket.EndReceive(ar);
-			bool val = BitConverter.ToBoolean(clientState.buffer, 0);
-			if (val)
-			{
-				Debug.WriteLine("Buffer length is 1");
-				string sendData = "ClientReady";
-				byte[] data = Encoding.ASCII.GetBytes(sendData);
-				clientState.clientSocket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback2), null);
-			}
 		}
 
 		private void SendCallback2(IAsyncResult ar)
@@ -117,16 +155,73 @@ namespace WinFormsFirstOne
 
 		private void ReceiveCallback(IAsyncResult ar)
 		{
+			List<int> message_list = (List<int>)ar.AsyncState;
+			int message_int = message_list.Last();
+			int receivedSize = clientState.clientSocket.EndReceive(ar);
 			try
 			{
-				int receivedSize = clientState.clientSocket.EndReceive(ar);
-				Debug.WriteLine("Client: "+receivedSize);
-				ConvertAndDisplay(receivedSize);
+				Debug.WriteLine("Client received a message, size: " + receivedSize);
+				Messages2 message = (Messages2)message_int;
+				switch (message)
+				{
+					case (Messages2.GetCurrentCard):
+						UpdateCurrentCard(receivedSize);
+						OnCurrentCardReceived();
+						SendMessage(message_list);
+						break;
+					case (Messages2.GetOtherPlayerCards):
+						UpdateOtherPlayerCards(receivedSize);
+						OnOtherPlayerCardsReceived();
+						SendMessage(message_list);
+						break;
+					case (Messages2.GetOtherPlayerNames):
+						UpdateOtherPlayerNames(receivedSize);
+						OnOtherPlayerNamesReceived();
+						SendMessage(message_list);
+						break;
+					case (Messages2.GetUserCards):
+						UpdateUserCards(receivedSize);
+						OnUserCardsReceived();
+						SendMessage(message_list);
+						break;
+				}
 			}
 			catch (Exception e)
 			{
 				Debug.WriteLine(e.ToString());
 			}
+		}
+
+		private void UpdateUserCards(int receivedSize)
+		{
+			Debug.WriteLine("Updating UserCards");
+			string data = Encoding.ASCII.GetString(clientState.buffer, 0, receivedSize);
+			List<UNOCard> cards = JsonConvert.DeserializeObject<List<UNOCard>>(data);
+			clientState.userCards = cards;
+		}
+
+		private void UpdateOtherPlayerNames(int receivedSize)
+		{
+			Debug.WriteLine("Updating OtherPlayerNames");
+			string data = Encoding.ASCII.GetString(clientState.buffer, 0, receivedSize);
+			List<string> playerNames = JsonConvert.DeserializeObject<List<string>>(data);
+			clientState.otherPlayerNames = playerNames;
+		}
+
+		private void UpdateOtherPlayerCards(int receivedSize)
+		{
+			Debug.WriteLine("Updating UserCards");
+			string data = Encoding.ASCII.GetString(clientState.buffer, 0, receivedSize);
+			List<int> sizes = JsonConvert.DeserializeObject<List<int>>(data);
+			clientState.otherPlayerCards = sizes;
+		}
+
+		private void UpdateCurrentCard(int receivedSize)
+		{
+			Debug.WriteLine("Updating CurrentCard");
+			string data = Encoding.ASCII.GetString(clientState.buffer, 0, receivedSize);
+			UNOCard card = JsonConvert.DeserializeObject<UNOCard>(data);
+			clientState.currentCard = card;
 		}
 
 		private void ConvertAndDisplay(int receivedSize)
@@ -144,7 +239,7 @@ namespace WinFormsFirstOne
 			List<UNOCard> cards = JsonConvert.DeserializeObject<List<UNOCard>>(cardString);
 			Debug.WriteLine(cards[0].GetColor());
 			clientState.setuserCards(cards);
-			OnPlayerCardsReceived();
+			OnUserCardsReceived();
 		}
 	}
 }

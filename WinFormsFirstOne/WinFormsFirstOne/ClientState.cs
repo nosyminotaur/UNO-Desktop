@@ -13,28 +13,28 @@ namespace WinFormsFirstOne
 		public byte[] buffer;
 		public string userName;
 		//Still not sure whether to use list or array
-		public List<string> playerNames;
+		public List<string> otherPlayerNames;
 		public UNOCard currentCard;
 		public List<UNOCard> userCards;
 		public List<int> otherPlayerCards;
 
 		public ClientState(string username)
 		{
-			this.clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-			this.userName = username;
+			clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+			userName = username;
 			buffer = new byte[clientSocket.ReceiveBufferSize];
-			playerNames = new List<string>();
+			otherPlayerNames = new List<string>();
 			userCards = new List<UNOCard>();
 			otherPlayerCards = new List<int>();
 		}
 
-		public void setPlayerNames(List<string> playernames)
+		public void SetPlayerNames(List<string> playernames)
 		{
 			if (playernames == null)
 			{
 				return;
 			}
-			this.playerNames = playernames;
+			this.otherPlayerNames = playernames;
 		}
 
 		public void setCurrentCard(UNOCard currentcard)

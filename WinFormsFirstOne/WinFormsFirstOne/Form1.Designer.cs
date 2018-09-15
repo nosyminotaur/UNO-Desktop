@@ -28,359 +28,286 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.infoLabel = new System.Windows.Forms.Label();
-			this.IPAddressOutputTextBox = new System.Windows.Forms.TextBox();
-			this.label1 = new System.Windows.Forms.Label();
-			this.StartServerButton = new System.Windows.Forms.Button();
-			this.UserNameTextBox = new System.Windows.Forms.TextBox();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.panel2 = new System.Windows.Forms.Panel();
-			this.UserNameTextBox2 = new System.Windows.Forms.TextBox();
-			this.label6 = new System.Windows.Forms.Label();
-			this.ConnectionStatusLabel = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
-			this.IPAddressInputTextBox = new System.Windows.Forms.TextBox();
+			this.StartPanel = new System.Windows.Forms.Panel();
+			this.UserNameLabel = new System.Windows.Forms.Label();
+			this.ipAddressLabel = new System.Windows.Forms.Label();
+			this.HostGameButton = new System.Windows.Forms.Button();
 			this.JoinGameButton = new System.Windows.Forms.Button();
-			this.HostGamePanel = new System.Windows.Forms.Panel();
-			this.label7 = new System.Windows.Forms.Label();
-			this.panel3 = new System.Windows.Forms.Panel();
-			this.label5 = new System.Windows.Forms.Label();
-			this.button2 = new System.Windows.Forms.Button();
-			this.button1 = new System.Windows.Forms.Button();
+			this.StartGameJoinButton = new System.Windows.Forms.Button();
+			this.IPAddressTextBox = new System.Windows.Forms.TextBox();
+			this.InfoLabel = new System.Windows.Forms.Label();
+			this.UserNameTextBox = new System.Windows.Forms.TextBox();
+			this.GamePanel = new System.Windows.Forms.Panel();
+			this.UserCardsPanel = new System.Windows.Forms.Panel();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.pictureBox5 = new System.Windows.Forms.PictureBox();
+			this.pictureBox2 = new System.Windows.Forms.PictureBox();
 			this.pictureBox4 = new System.Windows.Forms.PictureBox();
 			this.pictureBox3 = new System.Windows.Forms.PictureBox();
-			this.pictureBox2 = new System.Windows.Forms.PictureBox();
-			this.label4 = new System.Windows.Forms.Label();
-			this.CurrentCardPictureBox = new System.Windows.Forms.PictureBox();
-			this.label3 = new System.Windows.Forms.Label();
-			this.textBox1 = new System.Windows.Forms.TextBox();
-			this.panel1.SuspendLayout();
-			this.panel2.SuspendLayout();
-			this.HostGamePanel.SuspendLayout();
-			this.panel3.SuspendLayout();
+			this.label2 = new System.Windows.Forms.Label();
+			this.label1 = new System.Windows.Forms.Label();
+			this.currentCardPictureBox = new System.Windows.Forms.PictureBox();
+			this.StartPanel.SuspendLayout();
+			this.GamePanel.SuspendLayout();
+			this.UserCardsPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.CurrentCardPictureBox)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.currentCardPictureBox)).BeginInit();
 			this.SuspendLayout();
 			// 
-			// infoLabel
+			// StartPanel
 			// 
-			this.infoLabel.AutoSize = true;
-			this.infoLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.infoLabel.Location = new System.Drawing.Point(-1, 326);
-			this.infoLabel.Name = "infoLabel";
-			this.infoLabel.Size = new System.Drawing.Size(0, 21);
-			this.infoLabel.TabIndex = 10;
+			this.StartPanel.BackColor = System.Drawing.Color.White;
+			this.StartPanel.Controls.Add(this.UserNameLabel);
+			this.StartPanel.Controls.Add(this.ipAddressLabel);
+			this.StartPanel.Controls.Add(this.HostGameButton);
+			this.StartPanel.Controls.Add(this.JoinGameButton);
+			this.StartPanel.Controls.Add(this.StartGameJoinButton);
+			this.StartPanel.Controls.Add(this.IPAddressTextBox);
+			this.StartPanel.Controls.Add(this.InfoLabel);
+			this.StartPanel.Controls.Add(this.UserNameTextBox);
+			this.StartPanel.Location = new System.Drawing.Point(-3, 0);
+			this.StartPanel.Name = "StartPanel";
+			this.StartPanel.Size = new System.Drawing.Size(805, 606);
+			this.StartPanel.TabIndex = 11;
 			// 
-			// IPAddressOutputTextBox
+			// UserNameLabel
 			// 
-			this.IPAddressOutputTextBox.Location = new System.Drawing.Point(138, 101);
-			this.IPAddressOutputTextBox.Name = "IPAddressOutputTextBox";
-			this.IPAddressOutputTextBox.Size = new System.Drawing.Size(112, 20);
-			this.IPAddressOutputTextBox.TabIndex = 14;
+			this.UserNameLabel.AutoSize = true;
+			this.UserNameLabel.BackColor = System.Drawing.Color.White;
+			this.UserNameLabel.Font = new System.Drawing.Font("Gabriola", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.UserNameLabel.ForeColor = System.Drawing.Color.Black;
+			this.UserNameLabel.Location = new System.Drawing.Point(94, 58);
+			this.UserNameLabel.Name = "UserNameLabel";
+			this.UserNameLabel.Size = new System.Drawing.Size(127, 39);
+			this.UserNameLabel.TabIndex = 0;
+			this.UserNameLabel.Text = "Enter Username!";
 			// 
-			// label1
+			// ipAddressLabel
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(13, 101);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(88, 13);
-			this.label1.TabIndex = 15;
-			this.label1.Text = "Server started at:";
+			this.ipAddressLabel.AutoSize = true;
+			this.ipAddressLabel.BackColor = System.Drawing.Color.White;
+			this.ipAddressLabel.Font = new System.Drawing.Font("Gabriola", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.ipAddressLabel.ForeColor = System.Drawing.Color.Black;
+			this.ipAddressLabel.Location = new System.Drawing.Point(94, 124);
+			this.ipAddressLabel.Name = "ipAddressLabel";
+			this.ipAddressLabel.Size = new System.Drawing.Size(189, 39);
+			this.ipAddressLabel.TabIndex = 2;
+			this.ipAddressLabel.Text = "Enter IP Address of Server!";
 			// 
-			// StartServerButton
+			// HostGameButton
 			// 
-			this.StartServerButton.Location = new System.Drawing.Point(138, 42);
-			this.StartServerButton.Name = "StartServerButton";
-			this.StartServerButton.Size = new System.Drawing.Size(112, 48);
-			this.StartServerButton.TabIndex = 16;
-			this.StartServerButton.Text = "Start server";
-			this.StartServerButton.UseVisualStyleBackColor = true;
-			this.StartServerButton.Click += new System.EventHandler(this.StartServerButton_Click);
+			this.HostGameButton.BackColor = System.Drawing.Color.RoyalBlue;
+			this.HostGameButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.HostGameButton.Font = new System.Drawing.Font("Gabriola", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.HostGameButton.ForeColor = System.Drawing.Color.White;
+			this.HostGameButton.Location = new System.Drawing.Point(401, 477);
+			this.HostGameButton.Name = "HostGameButton";
+			this.HostGameButton.Size = new System.Drawing.Size(389, 85);
+			this.HostGameButton.TabIndex = 13;
+			this.HostGameButton.Text = "HOST GAME!";
+			this.HostGameButton.UseVisualStyleBackColor = false;
+			this.HostGameButton.Click += new System.EventHandler(this.HostGameButton_Click);
+			// 
+			// JoinGameButton
+			// 
+			this.JoinGameButton.BackColor = System.Drawing.Color.RoyalBlue;
+			this.JoinGameButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.JoinGameButton.Font = new System.Drawing.Font("Gabriola", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.JoinGameButton.ForeColor = System.Drawing.Color.White;
+			this.JoinGameButton.Location = new System.Drawing.Point(15, 477);
+			this.JoinGameButton.Name = "JoinGameButton";
+			this.JoinGameButton.Size = new System.Drawing.Size(376, 85);
+			this.JoinGameButton.TabIndex = 14;
+			this.JoinGameButton.Text = "JOIN GAME!";
+			this.JoinGameButton.UseVisualStyleBackColor = false;
+			this.JoinGameButton.Click += new System.EventHandler(this.JoinGameButton_Click);
+			// 
+			// StartGameJoinButton
+			// 
+			this.StartGameJoinButton.BackColor = System.Drawing.Color.RoyalBlue;
+			this.StartGameJoinButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.StartGameJoinButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.StartGameJoinButton.ForeColor = System.Drawing.Color.White;
+			this.StartGameJoinButton.Location = new System.Drawing.Point(465, 205);
+			this.StartGameJoinButton.Name = "StartGameJoinButton";
+			this.StartGameJoinButton.Size = new System.Drawing.Size(147, 56);
+			this.StartGameJoinButton.TabIndex = 4;
+			this.StartGameJoinButton.Text = "Connect";
+			this.StartGameJoinButton.UseVisualStyleBackColor = false;
+			this.StartGameJoinButton.Click += new System.EventHandler(this.StartGameJoinButton_Click);
+			// 
+			// IPAddressTextBox
+			// 
+			this.IPAddressTextBox.Location = new System.Drawing.Point(465, 124);
+			this.IPAddressTextBox.Name = "IPAddressTextBox";
+			this.IPAddressTextBox.Size = new System.Drawing.Size(226, 20);
+			this.IPAddressTextBox.TabIndex = 3;
+			// 
+			// InfoLabel
+			// 
+			this.InfoLabel.AutoSize = true;
+			this.InfoLabel.BackColor = System.Drawing.Color.White;
+			this.InfoLabel.Font = new System.Drawing.Font("Gabriola", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.InfoLabel.ForeColor = System.Drawing.Color.Black;
+			this.InfoLabel.Location = new System.Drawing.Point(94, 345);
+			this.InfoLabel.Name = "InfoLabel";
+			this.InfoLabel.Size = new System.Drawing.Size(162, 39);
+			this.InfoLabel.TabIndex = 15;
+			this.InfoLabel.Text = "Press Connect to Start!";
 			// 
 			// UserNameTextBox
 			// 
-			this.UserNameTextBox.Location = new System.Drawing.Point(138, 7);
+			this.UserNameTextBox.Location = new System.Drawing.Point(465, 61);
 			this.UserNameTextBox.Name = "UserNameTextBox";
-			this.UserNameTextBox.Size = new System.Drawing.Size(112, 20);
-			this.UserNameTextBox.TabIndex = 17;
+			this.UserNameTextBox.Size = new System.Drawing.Size(226, 20);
+			this.UserNameTextBox.TabIndex = 1;
 			// 
-			// panel1
+			// GamePanel
 			// 
-			this.panel1.Controls.Add(this.panel2);
-			this.panel1.Controls.Add(this.HostGamePanel);
-			this.panel1.Location = new System.Drawing.Point(12, 12);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(579, 170);
-			this.panel1.TabIndex = 20;
+			this.GamePanel.BackColor = System.Drawing.Color.White;
+			this.GamePanel.Controls.Add(this.UserCardsPanel);
+			this.GamePanel.Controls.Add(this.label2);
+			this.GamePanel.Controls.Add(this.label1);
+			this.GamePanel.Controls.Add(this.currentCardPictureBox);
+			this.GamePanel.Location = new System.Drawing.Point(0, 0);
+			this.GamePanel.Name = "GamePanel";
+			this.GamePanel.Size = new System.Drawing.Size(802, 606);
+			this.GamePanel.TabIndex = 16;
 			// 
-			// panel2
+			// UserCardsPanel
 			// 
-			this.panel2.Controls.Add(this.UserNameTextBox2);
-			this.panel2.Controls.Add(this.label6);
-			this.panel2.Controls.Add(this.ConnectionStatusLabel);
-			this.panel2.Controls.Add(this.label2);
-			this.panel2.Controls.Add(this.IPAddressInputTextBox);
-			this.panel2.Controls.Add(this.JoinGameButton);
-			this.panel2.Location = new System.Drawing.Point(295, 13);
-			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(276, 148);
-			this.panel2.TabIndex = 23;
+			this.UserCardsPanel.Controls.Add(this.pictureBox1);
+			this.UserCardsPanel.Controls.Add(this.pictureBox5);
+			this.UserCardsPanel.Controls.Add(this.pictureBox2);
+			this.UserCardsPanel.Controls.Add(this.pictureBox4);
+			this.UserCardsPanel.Controls.Add(this.pictureBox3);
+			this.UserCardsPanel.Location = new System.Drawing.Point(213, 37);
+			this.UserCardsPanel.Name = "UserCardsPanel";
+			this.UserCardsPanel.Size = new System.Drawing.Size(524, 140);
+			this.UserCardsPanel.TabIndex = 8;
 			// 
-			// UserNameTextBox2
+			// pictureBox1
 			// 
-			this.UserNameTextBox2.Location = new System.Drawing.Point(138, 7);
-			this.UserNameTextBox2.Name = "UserNameTextBox2";
-			this.UserNameTextBox2.Size = new System.Drawing.Size(112, 20);
-			this.UserNameTextBox2.TabIndex = 22;
+			this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+			this.pictureBox1.Name = "pictureBox1";
+			this.pictureBox1.Size = new System.Drawing.Size(100, 140);
+			this.pictureBox1.TabIndex = 3;
+			this.pictureBox1.TabStop = false;
+			this.pictureBox1.Click += new System.EventHandler(this.UserCardPictureBox_Click);
 			// 
-			// label6
+			// pictureBox5
 			// 
-			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(3, 10);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(86, 13);
-			this.label6.TabIndex = 20;
-			this.label6.Text = "Enter Username:";
+			this.pictureBox5.Location = new System.Drawing.Point(424, 0);
+			this.pictureBox5.Name = "pictureBox5";
+			this.pictureBox5.Size = new System.Drawing.Size(100, 140);
+			this.pictureBox5.TabIndex = 7;
+			this.pictureBox5.TabStop = false;
+			this.pictureBox5.Click += new System.EventHandler(this.UserCardPictureBox_Click);
 			// 
-			// ConnectionStatusLabel
+			// pictureBox2
 			// 
-			this.ConnectionStatusLabel.AutoSize = true;
-			this.ConnectionStatusLabel.Location = new System.Drawing.Point(138, 115);
-			this.ConnectionStatusLabel.Name = "ConnectionStatusLabel";
-			this.ConnectionStatusLabel.Size = new System.Drawing.Size(0, 13);
-			this.ConnectionStatusLabel.TabIndex = 19;
+			this.pictureBox2.Location = new System.Drawing.Point(106, 0);
+			this.pictureBox2.Name = "pictureBox2";
+			this.pictureBox2.Size = new System.Drawing.Size(100, 140);
+			this.pictureBox2.TabIndex = 4;
+			this.pictureBox2.TabStop = false;
+			this.pictureBox2.Click += new System.EventHandler(this.UserCardPictureBox_Click);
+			// 
+			// pictureBox4
+			// 
+			this.pictureBox4.Location = new System.Drawing.Point(318, 0);
+			this.pictureBox4.Name = "pictureBox4";
+			this.pictureBox4.Size = new System.Drawing.Size(100, 140);
+			this.pictureBox4.TabIndex = 6;
+			this.pictureBox4.TabStop = false;
+			this.pictureBox4.Click += new System.EventHandler(this.UserCardPictureBox_Click);
+			// 
+			// pictureBox3
+			// 
+			this.pictureBox3.Location = new System.Drawing.Point(212, 0);
+			this.pictureBox3.Name = "pictureBox3";
+			this.pictureBox3.Size = new System.Drawing.Size(100, 140);
+			this.pictureBox3.TabIndex = 5;
+			this.pictureBox3.TabStop = false;
+			this.pictureBox3.Click += new System.EventHandler(this.UserCardPictureBox_Click);
 			// 
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(3, 45);
+			this.label2.Location = new System.Drawing.Point(413, 9);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(48, 13);
-			this.label2.TabIndex = 18;
-			this.label2.Text = "Enter IP:";
+			this.label2.Size = new System.Drawing.Size(59, 13);
+			this.label2.TabIndex = 2;
+			this.label2.Text = "Your Cards";
 			// 
-			// IPAddressInputTextBox
+			// label1
 			// 
-			this.IPAddressInputTextBox.Location = new System.Drawing.Point(138, 42);
-			this.IPAddressInputTextBox.Name = "IPAddressInputTextBox";
-			this.IPAddressInputTextBox.Size = new System.Drawing.Size(112, 20);
-			this.IPAddressInputTextBox.TabIndex = 17;
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(15, 9);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(66, 13);
+			this.label1.TabIndex = 1;
+			this.label1.Text = "Current Card";
 			// 
-			// JoinGameButton
+			// currentCardPictureBox
 			// 
-			this.JoinGameButton.Location = new System.Drawing.Point(138, 88);
-			this.JoinGameButton.Name = "JoinGameButton";
-			this.JoinGameButton.Size = new System.Drawing.Size(112, 33);
-			this.JoinGameButton.TabIndex = 16;
-			this.JoinGameButton.Text = "Join Game";
-			this.JoinGameButton.UseVisualStyleBackColor = true;
-			this.JoinGameButton.Click += new System.EventHandler(this.JoinGameButton_Click);
-			// 
-			// HostGamePanel
-			// 
-			this.HostGamePanel.Controls.Add(this.label7);
-			this.HostGamePanel.Controls.Add(this.label1);
-			this.HostGamePanel.Controls.Add(this.UserNameTextBox);
-			this.HostGamePanel.Controls.Add(this.StartServerButton);
-			this.HostGamePanel.Controls.Add(this.IPAddressOutputTextBox);
-			this.HostGamePanel.Location = new System.Drawing.Point(13, 13);
-			this.HostGamePanel.Name = "HostGamePanel";
-			this.HostGamePanel.Size = new System.Drawing.Size(276, 148);
-			this.HostGamePanel.TabIndex = 22;
-			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(15, 10);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(86, 13);
-			this.label7.TabIndex = 21;
-			this.label7.Text = "Enter Username:";
-			// 
-			// panel3
-			// 
-			this.panel3.Controls.Add(this.label5);
-			this.panel3.Controls.Add(this.button2);
-			this.panel3.Controls.Add(this.button1);
-			this.panel3.Controls.Add(this.pictureBox1);
-			this.panel3.Controls.Add(this.pictureBox5);
-			this.panel3.Controls.Add(this.pictureBox4);
-			this.panel3.Controls.Add(this.pictureBox3);
-			this.panel3.Controls.Add(this.pictureBox2);
-			this.panel3.Controls.Add(this.label4);
-			this.panel3.Controls.Add(this.CurrentCardPictureBox);
-			this.panel3.Controls.Add(this.label3);
-			this.panel3.Location = new System.Drawing.Point(12, 188);
-			this.panel3.Name = "panel3";
-			this.panel3.Size = new System.Drawing.Size(756, 369);
-			this.panel3.TabIndex = 21;
-			// 
-			// label5
-			// 
-			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(148, 314);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(79, 13);
-			this.label5.TabIndex = 31;
-			this.label5.Text = "Selected Cards";
-			// 
-			// button2
-			// 
-			this.button2.Location = new System.Drawing.Point(519, 211);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(85, 37);
-			this.button2.TabIndex = 30;
-			this.button2.Text = "Next";
-			this.button2.UseVisualStyleBackColor = true;
-			// 
-			// button1
-			// 
-			this.button1.Location = new System.Drawing.Point(337, 211);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(85, 37);
-			this.button1.TabIndex = 29;
-			this.button1.Text = "Previous";
-			this.button1.UseVisualStyleBackColor = true;
-			// 
-			// pictureBox1
-			// 
-			this.pictureBox1.Location = new System.Drawing.Point(246, 70);
-			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size(85, 120);
-			this.pictureBox1.TabIndex = 28;
-			this.pictureBox1.TabStop = false;
-			// 
-			// pictureBox5
-			// 
-			this.pictureBox5.Location = new System.Drawing.Point(610, 70);
-			this.pictureBox5.Name = "pictureBox5";
-			this.pictureBox5.Size = new System.Drawing.Size(85, 120);
-			this.pictureBox5.TabIndex = 27;
-			this.pictureBox5.TabStop = false;
-			// 
-			// pictureBox4
-			// 
-			this.pictureBox4.Location = new System.Drawing.Point(519, 70);
-			this.pictureBox4.Name = "pictureBox4";
-			this.pictureBox4.Size = new System.Drawing.Size(85, 120);
-			this.pictureBox4.TabIndex = 26;
-			this.pictureBox4.TabStop = false;
-			// 
-			// pictureBox3
-			// 
-			this.pictureBox3.Location = new System.Drawing.Point(428, 70);
-			this.pictureBox3.Name = "pictureBox3";
-			this.pictureBox3.Size = new System.Drawing.Size(85, 120);
-			this.pictureBox3.TabIndex = 25;
-			this.pictureBox3.TabStop = false;
-			// 
-			// pictureBox2
-			// 
-			this.pictureBox2.Location = new System.Drawing.Point(337, 70);
-			this.pictureBox2.Name = "pictureBox2";
-			this.pictureBox2.Size = new System.Drawing.Size(85, 120);
-			this.pictureBox2.TabIndex = 24;
-			this.pictureBox2.TabStop = false;
-			// 
-			// label4
-			// 
-			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(443, 36);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(59, 13);
-			this.label4.TabIndex = 22;
-			this.label4.Text = "Your Cards";
-			// 
-			// CurrentCardPictureBox
-			// 
-			this.CurrentCardPictureBox.Location = new System.Drawing.Point(29, 70);
-			this.CurrentCardPictureBox.Name = "CurrentCardPictureBox";
-			this.CurrentCardPictureBox.Size = new System.Drawing.Size(85, 120);
-			this.CurrentCardPictureBox.TabIndex = 21;
-			this.CurrentCardPictureBox.TabStop = false;
-			// 
-			// label3
-			// 
-			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(48, 36);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(66, 13);
-			this.label3.TabIndex = 20;
-			this.label3.Text = "Current Card";
-			// 
-			// textBox1
-			// 
-			this.textBox1.Location = new System.Drawing.Point(622, 57);
-			this.textBox1.Multiline = true;
-			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(135, 45);
-			this.textBox1.TabIndex = 22;
+			this.currentCardPictureBox.Location = new System.Drawing.Point(15, 37);
+			this.currentCardPictureBox.Name = "currentCardPictureBox";
+			this.currentCardPictureBox.Size = new System.Drawing.Size(100, 140);
+			this.currentCardPictureBox.TabIndex = 0;
+			this.currentCardPictureBox.TabStop = false;
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.BackColor = System.Drawing.Color.DimGray;
 			this.ClientSize = new System.Drawing.Size(799, 602);
-			this.Controls.Add(this.textBox1);
-			this.Controls.Add(this.panel3);
-			this.Controls.Add(this.panel1);
-			this.Controls.Add(this.infoLabel);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.Controls.Add(this.GamePanel);
+			this.Controls.Add(this.StartPanel);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.MaximizeBox = false;
 			this.Name = "Form1";
-			this.Text = "Client";
-			this.panel1.ResumeLayout(false);
-			this.panel2.ResumeLayout(false);
-			this.panel2.PerformLayout();
-			this.HostGamePanel.ResumeLayout(false);
-			this.HostGamePanel.PerformLayout();
-			this.panel3.ResumeLayout(false);
-			this.panel3.PerformLayout();
+			this.Text = "UNO";
+			this.StartPanel.ResumeLayout(false);
+			this.StartPanel.PerformLayout();
+			this.GamePanel.ResumeLayout(false);
+			this.GamePanel.PerformLayout();
+			this.UserCardsPanel.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.CurrentCardPictureBox)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.currentCardPictureBox)).EndInit();
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
 		#endregion
-		private System.Windows.Forms.Label infoLabel;
-		private System.Windows.Forms.TextBox IPAddressOutputTextBox;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Button StartServerButton;
-		private System.Windows.Forms.TextBox UserNameTextBox;
-		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Panel HostGamePanel;
-		private System.Windows.Forms.Panel panel2;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.TextBox IPAddressInputTextBox;
+		private System.Windows.Forms.Panel StartPanel;
+		private System.Windows.Forms.Button HostGameButton;
 		private System.Windows.Forms.Button JoinGameButton;
-		private System.Windows.Forms.Panel panel3;
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.Label ConnectionStatusLabel;
-		private System.Windows.Forms.PictureBox CurrentCardPictureBox;
-		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.Label UserNameLabel;
+		private System.Windows.Forms.TextBox IPAddressTextBox;
+		private System.Windows.Forms.Label ipAddressLabel;
+		private System.Windows.Forms.TextBox UserNameTextBox;
+		private System.Windows.Forms.Button StartGameJoinButton;
+		public System.Windows.Forms.Label InfoLabel;
+		private System.Windows.Forms.Panel GamePanel;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.PictureBox currentCardPictureBox;
 		private System.Windows.Forms.PictureBox pictureBox5;
 		private System.Windows.Forms.PictureBox pictureBox4;
 		private System.Windows.Forms.PictureBox pictureBox3;
 		private System.Windows.Forms.PictureBox pictureBox2;
 		private System.Windows.Forms.PictureBox pictureBox1;
-		private System.Windows.Forms.Button button2;
-		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.Label label5;
-		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.TextBox UserNameTextBox2;
-		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Panel UserCardsPanel;
 	}
 }
 

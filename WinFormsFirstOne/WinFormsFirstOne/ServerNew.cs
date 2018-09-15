@@ -14,158 +14,49 @@ namespace WinFormsFirstOne
 {
 	enum Messages2
 	{
-		GetPlayerCards,
+		GetUserCards,
         GetOtherPlayerNames,
+		GetCurrentCard,
+		GetOtherPlayerCards,
         Null
 	}
 
-	public class GameState
+	public class PlayersEventArgs : EventArgs
 	{
-        //List of players
-        public List<PlayerState> players;
-		//Clear naming
-        public UNOCard currentCard;
-		public int chance = 0;
-        //Deck of cards to send cards to client when requested
-		private UNOCard[] deck;
-        //Clear naming
-		public Socket ServerSocket;
-        //Buffer to store data
-        public  byte[] buffer;
-		private readonly int port = 8081;
-
-		public GameState()
-		{
-			players = new List<PlayerState>();
-			deck = UNOCard.Shuffle(UNOCard.GetDeck());
-			currentCard = deck[0];
-			deck = UNOCard.RemoveCard(deck, currentCard);
-		}
-
-		public void Initialize(string username)
-		{
-            ServerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            ServerSocket.Bind(new IPEndPoint(GetIPAddress(), port));
-            players.Add(new PlayerState(ServerSocket, username, true));
-            ServerSocket.Listen(Constants.MAX_PLAYERS);
-            buffer = new byte[ServerSocket.ReceiveBufferSize];
-            Debug.WriteLine("Server started at: " + GetIPAddress().ToString());
-		}
-
-        //Add player and set its properties
-		public void AddPlayer(PlayerState playerState)
-		{
-			playerState.currentCard = currentCard;
-			playerState.noOfCards = Constants.START_CARDS;
-			UNOCard[] playerCards = new UNOCard[Constants.START_CARDS];
-			for (int i = 0; i< Constants.START_CARDS; i++)
-			{
-				playerCards[i] = deck[0];
-				deck = UNOCard.RemoveCard(deck, playerCards[i]);
-			}
-			playerState.playerCards = playerCards;
-			players.Add(playerState);
-			Debug.WriteLine("Player properly added!");
-		}
-
-        public string[] GetOtherPlayerNames(PlayerState playerState)
-        {
-            if (playerState == null)
-			{
-				return null;
-			}
-            string[] otherPlayerNames = new string[players.Capacity - 1];
-            int count = 0;
-            foreach (PlayerState player in players)
-            {
-                if (player.playerSocket == playerState.playerSocket)
-                {
-                    continue;
-                }
-                otherPlayerNames[count++] = player.playerName;
-            }
-            return otherPlayerNames;
-        }
-
-		public UNOCard[] GetPlayerCards(PlayerState playerState)
-		{
-			if (playerState == null)
-			{
-				return null;
-			}
-			UNOCard[] playerCards = null;
-			foreach (PlayerState player in players)
-			{
-				if (player.playerSocket == playerState.playerSocket)
-				{
-					playerCards = player.playerCards;
-				}
-			}
-			return playerCards;
-		}
-
-		private T[] SubArray<T>(T[] data, int index, int length)
-		{
-			T[] result = new T[length];
-			Array.Copy(data, index, result, 0, length);
-			return result;
-		}
-
-        public UNOCard[] GetCardsFromDeck(int noOfCards)
-        {
-            if (noOfCards < 1)
-            {
-                return null;
-            }
-            UNOCard[] cards = new UNOCard[noOfCards];
-            for (int i = 0; i< noOfCards; i++)
-            {
-                cards[i] = deck[0];
-                deck = UNOCard.RemoveCard(deck, cards[i]);
-            }
-            return cards;
-        }
-
-		public UNOCard getCurrentCard()
-		{
-			return currentCard;
-		}
-
-		public  IPAddress GetIPAddress()
-		{
-			IPAddress ipAddress = IPAddress.Any;
-			foreach (IPAddress ip in Dns.GetHostAddresses(Dns.GetHostName()))
-			{
-				if (ip.AddressFamily == AddressFamily.InterNetwork)
-				{
-					ipAddress = ip;
-					break;
-				}
-			}
-			return ipAddress;
-		}
+		public List<PlayerState> playerList;
 	}
 
 	public class ServerNew
 	{
 		private GameState gameState;
-		private int message_size;
-		private int receivedSize;
-		private readonly int port = 8081;
+		public event EventHandler<PlayersEventArgs> PlayersChanged;
 
-		public bool StartServer(string username)
+		public ServerNew(GameState gameState)
+		{
+			this.gameState = gameState;
+		}
+
+		public bool Initialize(string userName)
 		{
 			bool flag = true;
-			if (Initialize(username))
+			try
 			{
-                Debug.WriteLine("Initialization successful, listening on :" + GetIPAddress().ToString());
-				gameState.ServerSocket.BeginAccept(gameState.buffer.Length, new AsyncCallback(AcceptCallback), null);
+				gameState.Initialize();
 			}
-			else
+			catch (Exception e)
 			{
 				flag = false;
+				Debug.WriteLine(e.ToString());
+				throw;
 			}
 			return flag;
+		}
+
+		public void StartAccept()
+		{
+            Debug.WriteLine("Initialization successful, listening on :" + GetIPAddress().ToString());
+			gameState.ReceivedSize = 5;
+			gameState.ServerSocket.BeginAccept(gameState.buffer.Length, new AsyncCallback(AcceptCallback), null);
 		}
 
 		private void AcceptCallback(IAsyncResult ar)
@@ -177,8 +68,10 @@ namespace WinFormsFirstOne
 				string username = Encoding.ASCII.GetString(buffer);
 				Debug.WriteLine(username + " added!");
 				gameState.AddPlayer(new PlayerState(clientSocket, username));
+				Debug.WriteLine(gameState.players[0].playerName);
+				OnPlayersChanged();
 				clientSocket.BeginReceive(gameState.buffer, 0, gameState.buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), clientSocket);
-				
+
 				if (gameState.players.Count < Constants.MAX_PLAYERS)
 				{
                     Debug.WriteLine("Still listening!");
@@ -202,15 +95,15 @@ namespace WinFormsFirstOne
 			{
                 Debug.WriteLine("Message received from client!");
 				Socket clientSocket = (Socket)ar.AsyncState;
-				receivedSize =clientSocket.EndReceive(ar);
-				Debug.WriteLine("receivedSize is "+receivedSize);
-				if (receivedSize == 0)
+				gameState.receivedSize = clientSocket.EndReceive(ar);
+				Debug.WriteLine("gameState.receivedSize is "+gameState.receivedSize);
+				if (gameState.receivedSize == 0)
 				{
                     Debug.WriteLine("Received nothing, waiting for a message from client again!");
 					clientSocket.BeginReceive(gameState.buffer, 0, gameState.buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), clientSocket);
 				}
 
-                if (receivedSize == 4)
+                if (gameState.receivedSize == 4)
                 {
                     Debug.WriteLine("Integer received, checking on the type of message");
                     int message = BitConverter.ToInt32(gameState.buffer, 0);
@@ -230,13 +123,21 @@ namespace WinFormsFirstOne
             mess = (Messages2)message;
             switch (mess)
             {
-                case Messages2.GetPlayerCards:
-                    Debug.WriteLine("GetPlayerCards message received!");
+                case Messages2.GetUserCards:
+                    Debug.WriteLine("GetUserCards message received!");
                     SendCards(clientSocket);
 					break;
                 case Messages2.GetOtherPlayerNames:
                     Debug.WriteLine("GetOtherPlayerNames message received!");
                     SendOtherPlayerNames(clientSocket);
+					break;
+				case Messages2.GetCurrentCard:
+					Debug.WriteLine("GetCurrentCard received!");
+					SendCurrentCard(clientSocket);
+					break;
+				case Messages2.GetOtherPlayerCards:
+					Debug.WriteLine("GetOtherPlayerCards received!");
+					SendOtherPlayerCards(clientSocket);
 					break;
             }
         }
@@ -285,6 +186,44 @@ namespace WinFormsFirstOne
             {
                 Debug.WriteLine("Corresponding Player for socket not found!");
             }
+		}
+
+		private void SendCurrentCard(Socket clientSocket)
+		{
+			PlayerState player = GetPlayerStateFromSocket(clientSocket);
+			if (player != null)
+			{
+				UNOCard currentCard = gameState.getCurrentCard();
+				byte[] data = ConvertObjectToByte(currentCard);
+				Debug.WriteLine("Sending currentCard, type UNOCard");
+				Send(player, data);
+			}
+			else
+			{
+				Debug.WriteLine("Corresponding Player for socket not found!");
+			}
+		}
+
+		private void SendOtherPlayerCards(Socket clientSocket)
+		{
+			PlayerState player = GetPlayerStateFromSocket(clientSocket);
+			if (player != null)
+			{
+				int[] otherPlayerCards = gameState.GetOtherPlayerCards(player);
+				byte[] data = ConvertListToByte(otherPlayerCards);
+				Debug.WriteLine("Sending OtherPlayerCards, type UNOCard");
+				Send(player, data);
+			}
+			else
+			{
+				Debug.WriteLine("Corresponding Player for socket not found!");
+			}
+		}
+
+		private byte[] ConvertObjectToByte(object obj)
+		{
+			string data = JsonConvert.SerializeObject(obj);
+			return Encoding.ASCII.GetBytes(data);
 		}
 
 		private byte[] ConvertListToByte<T>(T[] array)
@@ -387,11 +326,11 @@ namespace WinFormsFirstOne
 		//	Socket clientSocket = (Socket)ar.AsyncState;
 		//	try
 		//	{
-		//		int receivedSize = gameState.ServerSocket.EndReceive(ar);
-		//		if (receivedSize != message_size)
+		//		int gameState.receivedSize = gameState.ServerSocket.EndReceive(ar);
+		//		if (gameState.receivedSize != message_size)
 		//		{
 		//			Debug.WriteLine("Full message not received");
-		//			clientSocket.BeginReceive(gameState.buffer, receivedSize, gameState.buffer.Length - receivedSize, SocketFlags.None, new AsyncCallback(DataReceiveCallback), clientSocket);
+		//			clientSocket.BeginReceive(gameState.buffer, gameState.receivedSize, gameState.buffer.Length - gameState.receivedSize, SocketFlags.None, new AsyncCallback(DataReceiveCallback), clientSocket);
 		//		}
 		//		string message_received = Encoding.ASCII.GetString(gameState.buffer);
 		//		Debug.WriteLine(message_received);
@@ -429,23 +368,6 @@ namespace WinFormsFirstOne
 			clientSocket.BeginReceive(gameState.buffer, 0, gameState.buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), clientSocket);
 		}
 
-		private bool Initialize(string username)
-		{
-			bool flag = true;
-			try
-			{
-				gameState = new GameState();
-				gameState.Initialize(username);
-			}
-			catch (Exception e)
-			{
-				flag = false;
-				Debug.WriteLine(e.ToString());
-				throw;
-			}
-			return flag;
-		}
-
 		private  T[] SubArray<T>(T[] data, int index, int length)
 		{
 			T[] result = new T[length];
@@ -453,7 +375,7 @@ namespace WinFormsFirstOne
 			return result;
 		}
 
-		public  IPAddress GetIPAddress()
+		public IPAddress GetIPAddress()
 		{
 			IPAddress ipAddress = IPAddress.Any;
 			foreach (IPAddress ip in Dns.GetHostAddresses(Dns.GetHostName()))
@@ -465,6 +387,15 @@ namespace WinFormsFirstOne
 				}
 			}
 			return ipAddress;
+		}
+
+		protected virtual void OnPlayersChanged()
+		{
+			Debug.WriteLine("OnPlayersChanged called");
+			PlayersChanged?.Invoke(this, new PlayersEventArgs()
+			{
+				playerList = gameState.players
+			});
 		}
 	}
 }
